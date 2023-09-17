@@ -9,10 +9,9 @@
  */
 int _printf(const char *format, ...)
 {
+    int charCount = 0;
     va_list args;
     va_start(args, format);
-
-    int charCount = 0;
 
     while (*format != '\0')
     {
