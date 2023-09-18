@@ -1,12 +1,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include "main.h"
-/**
- * _printf - Print formatted output to stdout.
- * @format: A format string with optional conversion specifiers.
- *
- * Return: The number of characters printed (excluding the null byte).
- */
+
 int _printf(const char *format, ...)
 {
     va_list args;
@@ -36,6 +31,12 @@ int _printf(const char *format, ...)
                     s++;
                     count++;
                 }
+            }
+            else if (*format == 'd' || *format == 'i')
+            {
+                int num = va_arg(args, int);
+                printf("%d", num);
+                count++;
             }
             else if (*format == '%')
             {
