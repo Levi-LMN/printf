@@ -1,5 +1,6 @@
-#include "main.h"
-
+#include <stdarg.h>
+#include <stdio.h>
+#include "mian.h"
 /**
  * _printf - A function that produces output according to a format
  * @format: A string that contains the text to be written to stdout
@@ -10,6 +11,8 @@ int _printf(const char *format, ...)
 {
     va_list args;
     int count = 0;
+    char* str;
+    char c;
 
     va_start(args, format);
 
@@ -21,15 +24,22 @@ int _printf(const char *format, ...)
             switch (*format)
             {
                 case 'c':
-                case 's':
-                case '%':
-                    count += handle_cs_percent(format, &args);
+                    c = va_arg(args, int);
+                    putchar(c);
+                    count++;
                     break;
-                case 'u':
-                case 'o':
-                case 'x':
-                case 'X':
-                    count += handle_uoxX(format, &args);
+                case 's':
+                    str = va_arg(args, char*);
+                    while(*str)
+                    {
+                        putchar(*str);
+                        str++;
+                        count++;
+                    }
+                    break;
+                case '%':
+                    putchar('%');
+                    count++;
                     break;
                 default:
                     return (-1);
