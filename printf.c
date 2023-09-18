@@ -4,7 +4,7 @@
 /**
  * _printf - Print formatted output to stdout
  * @format: The format string containing conversion specifiers
- *         (supports %c, %s, and %%)
+ *         (supports %c, %s, %d, %i, and %%)
  * Return: The number of characters printed (excluding the null byte)
  */
 int _printf(const char *format, ...)
@@ -36,6 +36,12 @@ int _printf(const char *format, ...)
                     str++;
                     charCount++;
                 }
+            }
+            else if (*format == 'd' || *format == 'i')
+            {
+                int num = va_arg(args, int);
+                printf("%d", num);
+                charCount++;
             }
             else if (*format == '%')
             {
