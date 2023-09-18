@@ -1,18 +1,5 @@
-#include "main.h"
 #include <stdarg.h>
 #include <unistd.h>
-
-#define BUFF_SIZE 1024
-
-typedef struct {
-    char flags;
-    int width;
-    int precision;
-    char size;
-} FormatSpecifier;
-
-void print_buffer(char buffer[], int *buff_ind);
-int parse_format(const char *format, va_list args);
 
 int _printf(const char *format, ...)
 {
@@ -22,50 +9,45 @@ int _printf(const char *format, ...)
     va_list args;
     va_start(args, format);
 
-    int printed_chars = parse_format(format, args);
-
-    va_end(args);
-
-    return printed_chars;
-}
-
-void print_buffer(char buffer[], int *buff_ind)
-{
-    if (*buff_ind > 0)
-        write(1, buffer, *buff_ind);
-    
-    *buff_ind = 0;
-}
-
-int parse_format(const char *format, va_list args)
-{
-    char buffer[BUFF_SIZE];
-    int buff_ind = 0;
     int printed_chars = 0;
 
     for (int i = 0; format[i] != '\0'; i++)
     {
-        if (format[i] != '%')
+        if (format[i] == '%')
         {
-            buffer[buff_ind++] = format[i];
-            if (buff_ind == BUFF_SIZE)
+            i++; // Move past '%'
+            if (format[i] == 'c')
             {
-                print_buffer(buffer, &buff_ind);
-                printed_chars += BUFF_SIZE;
-            }
-            else
-            {
+                char c = va_arg(args, int);
+                write(1, &c, 1);
                 printed_chars++;
             }
+            else if (format[i] == 's')
+            {
+                char *s = va_arg(args, char *);
+                if (s == NULL)
+                    s = "(null)";
+                for (int j = 0; s[j] != '\0'; j++)
+                {
+                    write(1, &s[j], 1);
+                    printed_chars++;
+                }
+            }
+            else if (format[i] == '%')
+            {
+                write(1, "%", 1);
+                printed_chars++;
+            }
+            // Add more conversion specifiers if needed
         }
         else
         {
-            i++;
+            write(1, &format[i], 1);
+            printed_chars++;
         }
     }
 
-    print_buffer(buffer, &buff_ind);
-    printed_chars += buff_ind;
+    va_end(args);
 
     return printed_chars;
 }
