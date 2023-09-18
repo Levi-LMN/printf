@@ -1,65 +1,60 @@
+#include <stdarg.h>
+#include <stdio.h>
 #include "main.h"
-
 /**
- * _printf - Prints formatted output to stdout.
+ * _printf - A function that produces output according to a format
+ * @format: A string that contains the text to be written to stdout
  *
- * @format: A format string.
- * @...    : A variable number of arguments to be formatted.
- *
- * Returns: The number of characters printed (excluding the null byte used to end
- * output to strings).
+ * Return: The number of characters printed
  */
 int _printf(const char *format, ...)
 {
-  /**
-   * Create a variable argument list to iterate over the arguments.
-   */
-  va_list args;
-  va_start(args, format);
+    va_list args;
+    int count = 0;
+    char* str;
+    char c;
 
-  /**
-   * Initialize the number of characters printed.
-   */
-  int count = 0;
+    va_start(args, format);
 
-  /**
-   * Iterate over the format string and print each character, except for format
-   * specifiers. When a format specifier is encountered, print the corresponding
-   * argument value.
-   */
-  while (*format != '\0') {
-    if (*format == '%') {
-      switch (*(++format)) {
-        case 'c':
-          count += 1;
-          putchar(va_arg(args, int));
-          break;
-        case 's':
-          count += strlen(va_arg(args, char *));
-          puts(va_arg(args, char *));
-          break;
-        case '%':
-          count += 1;
-          putchar('%');
-          break;
-        default:
-          return -1;
-      }
-    } else {
-      count += 1;
-      putchar(*format);
+    while (*format)
+    {
+        if (*format == '%')
+        {
+            format++;
+            switch (*format)
+            {
+                case 'c':
+                    c = va_arg(args, int);
+                    putchar(c);
+                    count++;
+                    break;
+                case 's':
+                    str = va_arg(args, char*);
+                    while(*str)
+                    {
+                        putchar(*str);
+                        str++;
+                        count++;
+                    }
+                    break;
+                case '%':
+                    putchar('%');
+                    count++;
+                    break;
+                default:
+                    return (-1);
+            }
+        }
+        else
+        {
+            putchar(*format);
+            count++;
+        }
+        format++;
     }
-    format++;
-  }
 
-  /**
-   * Clean up the variable argument list.
-   */
-  va_end(args);
+    va_end(args);
 
-  /**
-   * Return the number of characters printed.
-   */
-  return count;
+    return (count);
 }
 
