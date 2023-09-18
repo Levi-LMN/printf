@@ -2,62 +2,56 @@
 #include <stdarg.h>
 #include "main.h"
 /**
- * _printf - Print formatted output to stdout
- * @format: The format string containing conversion specifiers
- *         (supports %c, %s, %d, %i, and %%)
- * Return: The number of characters printed (excluding the null byte)
+ * _printf - Print formatted output to stdout.
+ * @format: A format string with optional conversion specifiers.
+ *
+ * Return: The number of characters printed (excluding the null byte).
  */
 int _printf(const char *format, ...)
 {
-    int charCount = 0;
     va_list args;
+    int count = 0;
+
     va_start(args, format);
 
-    while (*format != '\0')
+    while (format && *format)
     {
         if (*format == '%')
         {
-            format++;
-            if (*format == '\0')
+            format++; /* Move past '%' */
+            if (!*format)
                 break;
-
-            if (*format == 'c')
+            else if (*format == 'c')
             {
-                char c = va_arg(args, int);
+                char c = (char)va_arg(args, int);
                 putchar(c);
-                charCount++;
+                count++;
             }
             else if (*format == 's')
             {
-                char *str = va_arg(args, char *);
-                while (*str != '\0')
+                const char *s = va_arg(args, const char*);
+                while (s && *s)
                 {
-                    putchar(*str);
-                    str++;
-                    charCount++;
+                    putchar(*s);
+                    s++;
+                    count++;
                 }
-            }
-            else if (*format == 'd' || *format == 'i')
-            {
-                int num = va_arg(args, int);
-                printf("%d", num);
-                charCount++;
             }
             else if (*format == '%')
             {
                 putchar('%');
-                charCount++;
+                count++;
             }
         }
         else
         {
             putchar(*format);
-            charCount++;
+            count++;
         }
         format++;
     }
 
     va_end(args);
-    return charCount;
+    return count;
 }
 
