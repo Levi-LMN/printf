@@ -55,14 +55,3 @@ int _printf(const char *format, ...)
     return charCount;
 }
 
-/**
- * main - Entry point of the program
- * Return: Always 0 (Success)
- */
-int main(void)
-{
-    int count = _printf("Hello, %c World! %s\n", 'C', "C Programming");
-    printf("Number of characters printed: %d\n", count);
-    return (0);
-}
-
