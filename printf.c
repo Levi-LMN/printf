@@ -2,6 +2,13 @@
 #include <stdarg.h>
 #include "main.h"
 
+void print_binary(unsigned int num)
+{
+    if (num > 1)
+        print_binary(num / 2);
+    putchar((num % 2) + '0');
+}
+
 int _printf(const char *format, ...)
 {
     va_list args;
@@ -36,6 +43,12 @@ int _printf(const char *format, ...)
             {
                 int num = va_arg(args, int);
                 printf("%d", num);
+                count++;
+            }
+            else if (*format == 'b')
+            {
+                unsigned int num = va_arg(args, unsigned int);
+                print_binary(num);
                 count++;
             }
             else if (*format == '%')
