@@ -1,6 +1,6 @@
 #include <stdarg.h>
 #include <stdio.h>
-#include "mian.h"
+#include "main.h"
 /**
  * _printf - A function that produces output according to a format
  * @format: A string that contains the text to be written to stdout
