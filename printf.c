@@ -14,7 +14,7 @@ int _printf(const char *format, ...)
     char* str;
     char c;
     unsigned int num;
-    char bin[33];
+    char buffer[33];
     char* p;
 
     va_start(args, format);
@@ -44,21 +44,29 @@ int _printf(const char *format, ...)
                     putchar('%');
                     count++;
                     break;
-                case 'b':
+                case 'u':
                     num = va_arg(args, unsigned int);
-                    p = &bin[32];
-                    *p = '\0';
-                    do {
-                        --p;
-                        *p = (num & 1) ? '1' : '0';
-                        num >>= 1;
-                    } while(num != 0);
-                    while(*p)
-                    {
-                        putchar(*p);
-                        p++;
-                        count++;
-                    }
+                    sprintf(buffer, "%u", num);
+                    fputs(buffer, stdout);
+                    count += strlen(buffer);
+                    break;
+                case 'o':
+                    num = va_arg(args, unsigned int);
+                    sprintf(buffer, "%o", num);
+                    fputs(buffer, stdout);
+                    count += strlen(buffer);
+                    break;
+                case 'x':
+                    num = va_arg(args, unsigned int);
+                    sprintf(buffer, "%x", num);
+                    fputs(buffer, stdout);
+                    count += strlen(buffer);
+                    break;
+                case 'X':
+                    num = va_arg(args, unsigned int);
+                    sprintf(buffer, "%X", num);
+                    fputs(buffer, stdout);
+                    count += strlen(buffer);
                     break;
                 default:
                     return (-1);
