@@ -13,6 +13,9 @@ int _printf(const char *format, ...)
     int count = 0;
     char* str;
     char c;
+    unsigned int num;
+    char bin[33];
+    char* p;
 
     va_start(args, format);
 
@@ -40,6 +43,22 @@ int _printf(const char *format, ...)
                 case '%':
                     putchar('%');
                     count++;
+                    break;
+                case 'b':
+                    num = va_arg(args, unsigned int);
+                    p = &bin[32];
+                    *p = '\0';
+                    do {
+                        --p;
+                        *p = (num & 1) ? '1' : '0';
+                        num >>= 1;
+                    } while(num != 0);
+                    while(*p)
+                    {
+                        putchar(*p);
+                        p++;
+                        count++;
+                    }
                     break;
                 default:
                     return (-1);
