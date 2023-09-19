@@ -1,52 +1,48 @@
-#include <stdio.h>
 #include <stdarg.h>
+#include <stdio.h>
 #include "main.h"
-
 /**
- * _printf - prints formatted output to stdout.
- * @format: A pointer to the format string.
- * 
- * Return: The number of characters printed (excluding the null byte).
+ * _printf - A function that produces output according to a format
+ * @format: A string that contains the text to be written to stdout
+ *
+ * Return: The number of characters printed
  */
 int _printf(const char *format, ...)
 {
     va_list args;
-    va_start(args, format);
-
     int count = 0;
+    char *str;
+    char ch;
+
+    va_start(args, format);
 
     while (*format)
     {
         if (*format == '%')
         {
-            format++; /* Move past the '%' */
+            format++;
             switch (*format)
             {
                 case 'c':
-                {
-                    char c = va_arg(args, int);
-                    putchar(c);
+                    ch = (char)va_arg(args, int);
+                    putchar(ch);
                     count++;
                     break;
-                }
                 case 's':
-                {
-                    char *s = va_arg(args, char *);
-                    while (*s)
+                    str = va_arg(args, char *);
+                    while (*str)
                     {
-                        putchar(*s);
-                        s++;
+                        putchar(*str);
+                        str++;
                         count++;
                     }
                     break;
-                }
                 case '%':
                     putchar('%');
                     count++;
                     break;
                 default:
-                    /* Handle unsupported conversion specifiers here */
-                    break;
+                    return (-1);
             }
         }
         else
@@ -59,6 +55,6 @@ int _printf(const char *format, ...)
 
     va_end(args);
 
-    return count;
+    return (count);
 }
 
