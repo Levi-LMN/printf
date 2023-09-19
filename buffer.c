@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
+#include "main.h"
 int main() {
     /* Define a buffer size */
     char buffer[1024];
